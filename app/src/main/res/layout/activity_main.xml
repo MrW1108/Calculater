@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:rowCount="8"
+        android:columnCount="4">
+
+        <EditText
+            android:id="@+id/txt"
+            android:layout_columnSpan="4"
+            android:layout_rowSpan="1"
+            android:layout_gravity = "fill"
+            android:textSize="50sp"/>
+        <EditText
+            android:id="@+id/result"
+            android:layout_columnSpan="4"
+            android:layout_rowSpan="1"
+            android:layout_gravity = "fill"
+            android:textSize="50sp"/>
+        <Button
+            android:text="@string/clear"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/add"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/sub"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/delete"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/sin"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/leftParenthese"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/rightParenthese"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/cos"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/number7"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/number8"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/number9"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/multiplication"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/number4"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/number5"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/number6"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/division"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/number1"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/number2"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/number3"
+            android:textSize="30sp"/>
+        <Button
+            android:text="@string/result"
+            android:layout_rowSpan="2"
+            android:layout_gravity = "fill"
+            android:textSize="30dp"/>
+        <Button
+            android:text="@string/surplus"
+            android:textSize="30dp"/>
+        <Button
+            android:text="@string/number0"
+            android:textSize="30dp"/>
+        <Button
+            android:text="@string/decimal"
+            android:textSize="30dp"/>
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
