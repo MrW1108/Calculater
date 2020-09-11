@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -63,11 +64,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case ".":
-                char lastStr = txt.getText().toString().charAt(txt.getText().toString().length()-1);
-                if(Character.isDigit(lastStr))
-                    txt.setText(txt.getText().toString() + bt.getText().toString());
-                else
-                    txt.setText(txt.getText().toString()+"0.");
+                if(txt.getText()==null || txt.getText().toString().length()==0 || txt.getText().toString()=="") {
+                    txt.setText(txt.getText().toString() + "0.");  //如果前面没有内容则直接0.
+                }else {
+                    char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                    if (Character.isDigit(lastStr))
+                        txt.setText(txt.getText().toString() + bt.getText().toString());
+                    else
+                        txt.setText(txt.getText().toString() + "0.");
+                }
                 break;
             default:
                 txt.setText(txt.getText().toString()+bt.getText().toString());
@@ -94,11 +99,23 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < s.length;){
             if(s[i] >= '0' && s[i] <= '9'){
                 float sum = 0;
+                boolean flag = true;  //设置标志位，true为整数，false为小数
+                int num = 0;  //小数的位数
                 //特别要注意i < s.length这个条件
-                while(i < s.length && s[i] >= '0' && s[i] <= '9'){
-                    sum = sum * 10 + s[i] - '0';
+                while((i < s.length && s[i] >= '0' && s[i] <= '9') || (i < s.length && s[i] == '.')){
+                    if(s[i] == '.') {
+                        flag = false;
+                    }
+                    else{
+                        if(flag) {
+                            sum = sum * 10 + s[i] - '0';
+                        }else {
+                            num++;
+                            sum = sum + (float) ((s[i] - '0') / Math.pow(10, num)); //pow()指数运算 s
+                        }
+                        /*System.out.println("i = " + i);*/
+                    }
                     i++;
-                    /*System.out.println("i = " + i);*/
                 }
                 queue.add(Float.toString(sum));
             }else if(s[i] == ')'){
@@ -119,31 +136,34 @@ public class MainActivity extends AppCompatActivity {
             queue.add(stack.pop() + "");
         }
         //必须要使用.equals方法才正确使用 == 不正确
-        Stack<Integer> res = new Stack<Integer>();
+        Stack<Float> res = new Stack<Float>();
         while(!queue.isEmpty()){
             String t = queue.poll();
             if(t.equals("+")  || t.equals("-") || t.equals("*") || t.equals("/")){
-                int a = res.pop();
-                int b = res.pop();
-                int result = cal(b, a, t);
+                float a = res.pop();
+                float b = res.pop();
+                float result = cal(b, a, t);
                 res.push(result);
             }else{
-                res.add(Integer.parseInt(t));
+                res.add(Float.parseFloat(t));
             }
         }
         return res.pop();
     }
 
-    private static int cal(int a, int b, String t) {
+
+    private static float cal(float a, float b, String t) {
         //计算
+        BigDecimal bigDecimal_a = BigDecimal.valueOf(a);   //BigDecimal类解决浮点数精度问题
+        BigDecimal bigDecimal_b = BigDecimal.valueOf(b);
         if(t.equals("+")){
-            return a + b;
+            return bigDecimal_a.add(bigDecimal_b).floatValue();
         }else if(t.equals("-")){
-            return a - b;
+            return bigDecimal_a.subtract(bigDecimal_b).floatValue();
         }else if(t.equals("*")){
-            return a * b;
+            return bigDecimal_a.multiply(bigDecimal_b).floatValue();
         }else{
-            return a / b;
+            return bigDecimal_a.divide(bigDecimal_b,6).floatValue();
         }
     }
 
@@ -154,5 +174,5 @@ public class MainActivity extends AppCompatActivity {
         if(c == '/' && (peek == '*' || peek == '/'))return -1;
         return 1;
     }
-
 }
+

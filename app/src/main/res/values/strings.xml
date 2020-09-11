@@ -23,4 +23,5 @@
     <string name="rightParenthese">)</string>
     <string name="sin">sin</string>
     <string name="cos">cos</string>
+    <string name="tan">tan</string>
 </resources>
