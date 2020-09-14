@@ -28,10 +28,17 @@
     <string name="x3">x³</string>
     <string name="sqrt">√</string>
     <string name="e">e</string>
-    <string name="log">log</string>
+    <string name="log">Log</string>
     <string name="ln">ln</string>
     <string name="xy">x^y</string>
     <string name="x1">1/x</string>
     <string name="pai">π</string>
     <string name="factorial">x!</string>
+    <string name="A">A</string>
+    <string name="B">B</string>
+    <string name="C">C</string>
+    <string name="D">D</string>
+    <string name="E">E</string>
+    <string name="F">F</string>
+    <string name="help">这是帮助。</string>
 </resources>

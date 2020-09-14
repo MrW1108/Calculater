@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="标准计算器"
+        android:textSize="20sp"/>
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="wrap_content"
@@ -58,8 +63,7 @@
         <Button
             android:text="@string/multiplication" />
         <Button
-            android:textAllCaps="false"
-            android:text="@string/e" />
+            android:text="@string/factorial" />
         <Button
             android:textAllCaps="false"
             android:text="@string/ln" />
@@ -94,12 +98,9 @@
             android:layout_rowSpan="2"
             android:layout_gravity = "fill" />
         <Button
-            android:text="@string/factorial" />
-        <Button
+            android:layout_columnSpan="3"
+            android:layout_gravity = "fill"
             android:text="@string/sqrt" />
-        <Button
-            android:textAllCaps="false"
-            android:text="@string/pai"/>
         <Button
             android:text="@string/surplus"/>
         <Button

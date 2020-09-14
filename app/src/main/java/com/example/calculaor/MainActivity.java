@@ -2,12 +2,19 @@ package com.example.calculaor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.res.Configuration;
+import android.content.Intent;
+
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -21,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //加载计算器控件
         final TextView txt = findViewById(R.id.txt);
         final TextView result = findViewById(R.id.result);
         GridLayout gridLayout = findViewById(R.id.gridLayout);
@@ -35,7 +43,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //按钮的功能
+    @Override
+    //加载菜单
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.main_menu,menu);
+        return true;
+    }
+
+    //菜单事件
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        switch(id){
+            case R.id.main:
+                Toast.makeText(this,item.getTitle(),Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.base:
+                Intent intent = new Intent(MainActivity.this, MainActivity_Conversion.class);
+                startActivity(intent);
+                Toast.makeText(this,item.getTitle(),Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.unit:
+                Intent intent2 = new Intent(MainActivity.this, MainActivity_unitConversion.class);
+                startActivity(intent2);
+                Toast.makeText(this,item.getTitle(),Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.help:
+                Intent intent3 = new Intent(MainActivity.this, MainActivity_help.class);
+                startActivity(intent3);
+                Toast.makeText(this,item.getTitle(),Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.exit:
+                System.exit(0);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //计算器功能
     private void selectButtonEvent(Button bt,TextView txt,TextView result){
         switch (bt.getText().toString()){
             case "C":
@@ -69,10 +114,22 @@ public class MainActivity extends AppCompatActivity {
                         txt.setText(txt.getText().toString() + "0.");
                 }
                 break;
+            case "1/x":
+                try {
+                    char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                    float num = Float.parseFloat(txt.getText().toString());
+                    if (txt.getText().toString().length() != 0 || Character.isDigit(lastStr) || lastStr==')' ){
+                        txt.setText(txt.getText().toString() + "^(-1)");
+                        result.setText(""+Math.pow(num,-1));
+                    }
+                }catch (Exception e){
+                    result.setText("输入错误");
+                }
+                break;
             case "x²":
                 try {
                     char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
-                    if (txt.getText().toString().length() == 0 || Character.isDigit(lastStr)) {
+                    if (txt.getText().toString().length() != 0 || Character.isDigit(lastStr) || lastStr==')' ){
                         txt.setText(txt.getText().toString() + "^(2)");
                         result.setText(""+solve(txt.getText().toString()));
                     }
@@ -83,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             case "x³":
                 try {
                     char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
-                    if (txt.getText().toString().length() == 0 || Character.isDigit(lastStr)) {
+                    if (txt.getText().toString().length() == 0 || Character.isDigit(lastStr) || lastStr==')' ) {
                         txt.setText(txt.getText().toString() + "^(3)");
                         result.setText(""+solve(txt.getText().toString()));
                     }
@@ -97,9 +154,11 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     try{
                         char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
-                        if (!Character.isDigit(lastStr)) {
+                        if (lastStr=='+' || lastStr=='-' || lastStr=='*' || lastStr=='/' || lastStr=='(') {
                             txt.setText(txt.getText().toString() + "sin");
                         }
+                        else
+                            result.setText("输入错误");
                     }catch (Exception e){
                         result.setText("输入错误");
                     }
@@ -111,9 +170,10 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     try{
                         char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
-                        if (!Character.isDigit(lastStr)) {
+                        if (lastStr=='+' || lastStr=='-' || lastStr=='*' || lastStr=='/' || lastStr=='(') {
                             txt.setText(txt.getText().toString() + "cos");
-                        }
+                        } else
+                            result.setText("输入错误");
                     }catch (Exception e){
                         result.setText("输入错误");
                     }
@@ -125,12 +185,100 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     try{
                         char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
-                        if (!Character.isDigit(lastStr)) {
+                        if (lastStr=='+' || lastStr=='-' || lastStr=='*' || lastStr=='/' || lastStr=='(') {
                             txt.setText(txt.getText().toString() + "tan");
-                        }
+                        }else
+                            result.setText("输入错误");
                     }catch (Exception e){
                         result.setText("输入错误");
                     }
+                }
+                break;
+            case "ln":
+                if(txt.getText().toString().length() == 0 )
+                    txt.setText("ln");
+                else{
+                    try{
+                        char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                        if (lastStr=='+' || lastStr=='-' || lastStr=='*' || lastStr=='/' || lastStr=='(') {
+                            txt.setText(txt.getText().toString() + "ln");
+                        }
+                        else
+                            result.setText("输入错误");
+                    }catch (Exception e){
+                        result.setText("输入错误");
+                    }
+                }
+                break;
+            case "Log":
+                if(txt.getText().toString().length() == 0 )
+                    txt.setText("Log");
+                else{
+                    try{
+                        char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                        if (lastStr=='+' || lastStr=='-' || lastStr=='*' || lastStr=='/' || lastStr=='(') {
+                            txt.setText(txt.getText().toString() + "Log");
+                        }
+                        else
+                            result.setText("输入错误");
+                    }catch (Exception e){
+                        result.setText("输入错误");
+                    }
+                }
+                break;
+            case "x!":
+                try {
+                    char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                    float num = Float.parseFloat(txt.getText().toString());
+                    if (txt.getText().toString().length() != 0 || Character.isDigit(lastStr) || lastStr==')' ){
+                        txt.setText(txt.getText().toString() + "!");
+                        float sum = 1;
+                        for(int i=1;i<=num;i++){
+                            sum *=i ;
+                        }
+                        result.setText(""+sum);
+                    }
+                }catch (Exception e){
+                    result.setText("输入错误");
+                }
+                break;
+            case "%":
+                try {
+                    char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                    float num = Float.parseFloat(txt.getText().toString());
+                    if (txt.getText().toString().length() != 0 || Character.isDigit(lastStr) || lastStr==')' ){
+                        txt.setText(txt.getText().toString() + "%");
+                        result.setText(""+num/100);
+                    }
+                }catch (Exception e){
+                    result.setText("输入错误");
+                }
+                break;
+            case "√":
+                try {
+                    char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                    float num = Float.parseFloat(txt.getText().toString());
+                    if (txt.getText().toString().length() != 0 || Character.isDigit(lastStr) || lastStr==')' ){
+                        txt.setText(txt.getText().toString() + "√");
+                        result.setText(""+Math.sqrt(num));
+                    }
+                }catch (Exception e){
+                    result.setText("输入错误");
+                }
+                break;
+            case "x^y":
+                try {
+                    char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                    if (txt.getText().toString().length() != 0 || Character.isDigit(lastStr) || lastStr==')'){
+                        txt.setText(txt.getText().toString() + "^");
+                        try{
+                            result.setText(""+solve(txt.getText().toString()));
+                        }catch (Exception e){
+                            break;
+                        }
+                    }
+                }catch (Exception e){
+                    result.setText("输入错误");
                 }
                 break;
             default:
@@ -183,20 +331,21 @@ public class MainActivity extends AppCompatActivity {
                 }
                 stack.pop();
                 i++;
-            }else{
-                if(s[i] == 's'|| s[i] == 'c' || s[i] == 't') {
-                    while(!stack.isEmpty() && compare(stack.peek(), s[i]) < 0) {
-                        queue.add(stack.pop() + "");
-                    }
-                    stack.add(s[i]);
-                    i += 3;
-                }else{
-                    while(!stack.isEmpty() && compare(stack.peek(), s[i]) < 0){
-                        queue.add(stack.pop() + "");
-                    }
-                    stack.add(s[i]);
-                    i++;
+            }else if(s[i] == 's'|| s[i] == 'c' || s[i] == 't' || s[i] == 'L' || s[i] == 'l' ){
+                while(!stack.isEmpty() && compare(stack.peek(), s[i]) < 0) {
+                    queue.add(stack.pop() + "");
                 }
+                stack.add(s[i]);
+                if(s[i] == 'l')
+                    i += 2;
+                else
+                    i += 3;
+            }else {
+                while (!stack.isEmpty() && compare(stack.peek(), s[i]) < 0) {
+                    queue.add(stack.pop() + "");
+                }
+                stack.add(s[i]);
+                i++;
             }
         }
         while(!stack.isEmpty()){
@@ -211,16 +360,26 @@ public class MainActivity extends AppCompatActivity {
                 float b = res.pop();
                 float result = cal(b, a, t);
                 res.push(result);
-            }else if(t.equals("s")  || t.equals("c") || t.equals("t")){
+            }else if(t.equals("s")  || t.equals("c") || t.equals("t") || t.equals("l") || t.equals("L")){
                 float result = 0;
                 float a = res.pop();
+                float radians = (float)Math.toRadians(a);
                 switch (t){
                     case "s":
-                        result = (float)Math.sin(a);
+                        result = (float)Math.sin(radians);
+                        break;
                     case "c":
-                        result = (float)Math.cos(a);
+                        result = (float)Math.cos(radians);
+                        break;
                     case "t":
-                        result = (float)Math.tan(a);
+                        result = (float)Math.tan(radians);
+                        break;
+                    case "l":
+                        result = (float)Math.log(a);   //计算ln  ln等价于loge(x)
+                        break;
+                    case "L":
+                        result = (float)Math.log10(a);   //计算log   logx(y) = loge(x)/loge(y)
+                        break;
                 }
                 res.push(result);
             }else{
@@ -251,12 +410,10 @@ public class MainActivity extends AppCompatActivity {
     private static int compare(char peek, char c) {
         if(peek == '(' || c == '(') return 1;
         if(c == '+' || c == '-') return -1;
-        if(c == '*' && (peek == '*' || peek == '/'))return -1;
-        if(c == '/' && (peek == '*' || peek == '/'))return -1;
-        if(peek == '^' && c == '^') return -1;
-        if(c == 's' && (peek == 's' || peek == 'c' || peek == 't'))return -1;
-        if(c == 'c' && (peek == 's' || peek == 'c' || peek == 't'))return -1;
-        if(c == 't' && (peek == 's' || peek == 'c' || peek == 't'))return -1;
+        if((c == '*' || c== '/') && (peek == '*' || peek == '/' || peek == 's' || peek == 'c' || peek == 't' || peek == 'l' || peek == 'L' || peek == '^')) return -1;
+        if(peek == '^' && c == '^') return -1;   //幂函数优先级
+        if((c == 's' || c == 'c' || c == 't')&& (peek == 'L' || peek == 'l' || peek == 's' || peek == 'c' || peek == 't')) return -1;  //三角函数优先级
+        if((c == 'l' || c == 'L') && (peek == 'L' || peek == 'l' || peek == 's' || peek == 'c' || peek == 't')) return -1;   //l(ln)  L(log)
         return 1;
     }
 
