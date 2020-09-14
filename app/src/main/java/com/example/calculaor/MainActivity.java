@@ -2,8 +2,8 @@ package com.example.calculaor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridLayout;
@@ -21,11 +21,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        onButtonClick();
-    }
-
-
-    private void onButtonClick(){
         final TextView txt = findViewById(R.id.txt);
         final TextView result = findViewById(R.id.result);
         GridLayout gridLayout = findViewById(R.id.gridLayout);
@@ -64,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case ".":
-                if(txt.getText()==null || txt.getText().toString().length()==0 || txt.getText().toString()=="") {
+                if(txt.getText().toString().length()==0 ) {
                     txt.setText(txt.getText().toString() + "0.");  //如果前面没有内容则直接0.
                 }else {
                     char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
@@ -74,12 +69,76 @@ public class MainActivity extends AppCompatActivity {
                         txt.setText(txt.getText().toString() + "0.");
                 }
                 break;
+            case "x²":
+                try {
+                    char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                    if (txt.getText().toString().length() == 0 || Character.isDigit(lastStr)) {
+                        txt.setText(txt.getText().toString() + "^(2)");
+                        result.setText(""+solve(txt.getText().toString()));
+                    }
+                }catch (Exception e){
+                    result.setText("输入错误");
+                }
+                break;
+            case "x³":
+                try {
+                    char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                    if (txt.getText().toString().length() == 0 || Character.isDigit(lastStr)) {
+                        txt.setText(txt.getText().toString() + "^(3)");
+                        result.setText(""+solve(txt.getText().toString()));
+                    }
+                }catch (Exception e){
+                    result.setText("输入错误");
+                }
+                break;
+            case "sin":
+                if(txt.getText().toString().length() == 0 )
+                    txt.setText("sin");
+                else{
+                    try{
+                        char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                        if (!Character.isDigit(lastStr)) {
+                            txt.setText(txt.getText().toString() + "sin");
+                        }
+                    }catch (Exception e){
+                        result.setText("输入错误");
+                    }
+                }
+                break;
+            case "cos":
+                if(txt.getText().toString().length() == 0 )
+                    txt.setText("cos");
+                else{
+                    try{
+                        char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                        if (!Character.isDigit(lastStr)) {
+                            txt.setText(txt.getText().toString() + "cos");
+                        }
+                    }catch (Exception e){
+                        result.setText("输入错误");
+                    }
+                }
+                break;
+            case "tan":
+                if(txt.getText().toString().length() == 0 )
+                    txt.setText("tan");
+                else{
+                    try{
+                        char lastStr = txt.getText().toString().charAt(txt.getText().toString().length() - 1);
+                        if (!Character.isDigit(lastStr)) {
+                            txt.setText(txt.getText().toString() + "tan");
+                        }
+                    }catch (Exception e){
+                        result.setText("输入错误");
+                    }
+                }
+                break;
             default:
                 txt.setText(txt.getText().toString()+bt.getText().toString());
                 try{
                     result.setText(""+solve(txt.getText().toString()));
                 }catch (Exception e){
-
+                    break;
                 }
                 break;
         }
@@ -125,11 +184,19 @@ public class MainActivity extends AppCompatActivity {
                 stack.pop();
                 i++;
             }else{
-                while(!stack.isEmpty() && compare(stack.peek(), s[i]) < 0){
-                    queue.add(stack.pop() + "");
+                if(s[i] == 's'|| s[i] == 'c' || s[i] == 't') {
+                    while(!stack.isEmpty() && compare(stack.peek(), s[i]) < 0) {
+                        queue.add(stack.pop() + "");
+                    }
+                    stack.add(s[i]);
+                    i += 3;
+                }else{
+                    while(!stack.isEmpty() && compare(stack.peek(), s[i]) < 0){
+                        queue.add(stack.pop() + "");
+                    }
+                    stack.add(s[i]);
+                    i++;
                 }
-                stack.add(s[i]);
-                i++;
             }
         }
         while(!stack.isEmpty()){
@@ -139,10 +206,22 @@ public class MainActivity extends AppCompatActivity {
         Stack<Float> res = new Stack<Float>();
         while(!queue.isEmpty()){
             String t = queue.poll();
-            if(t.equals("+")  || t.equals("-") || t.equals("*") || t.equals("/")){
+            if(t.equals("+")  || t.equals("-") || t.equals("*") || t.equals("/") || t.equals("^")){
                 float a = res.pop();
                 float b = res.pop();
                 float result = cal(b, a, t);
+                res.push(result);
+            }else if(t.equals("s")  || t.equals("c") || t.equals("t")){
+                float result = 0;
+                float a = res.pop();
+                switch (t){
+                    case "s":
+                        result = (float)Math.sin(a);
+                    case "c":
+                        result = (float)Math.cos(a);
+                    case "t":
+                        result = (float)Math.tan(a);
+                }
                 res.push(result);
             }else{
                 res.add(Float.parseFloat(t));
@@ -154,16 +233,18 @@ public class MainActivity extends AppCompatActivity {
 
     private static float cal(float a, float b, String t) {
         //计算
-        BigDecimal bigDecimal_a = BigDecimal.valueOf(a);   //BigDecimal类解决浮点数精度问题
-        BigDecimal bigDecimal_b = BigDecimal.valueOf(b);
+        BigDecimal bigDecimal_a = new BigDecimal(Float.toString(a));   //BigDecimal类解决浮点数精度问题
+        BigDecimal bigDecimal_b = new BigDecimal(Float.toString(b));
         if(t.equals("+")){
-            return bigDecimal_a.add(bigDecimal_b).floatValue();
+            return Float.parseFloat(""+bigDecimal_a.add(bigDecimal_b));
         }else if(t.equals("-")){
-            return bigDecimal_a.subtract(bigDecimal_b).floatValue();
+            return Float.parseFloat(""+bigDecimal_a.subtract(bigDecimal_b));
         }else if(t.equals("*")){
-            return bigDecimal_a.multiply(bigDecimal_b).floatValue();
+            return Float.parseFloat(""+bigDecimal_a.multiply(bigDecimal_b));
+        }else if(t.equals("^")){
+            return (float)Math.pow(a,b);
         }else{
-            return bigDecimal_a.divide(bigDecimal_b,6).floatValue();
+            return Float.parseFloat(""+bigDecimal_a.divide(bigDecimal_b,6,BigDecimal.ROUND_HALF_UP));
         }
     }
 
@@ -172,7 +253,12 @@ public class MainActivity extends AppCompatActivity {
         if(c == '+' || c == '-') return -1;
         if(c == '*' && (peek == '*' || peek == '/'))return -1;
         if(c == '/' && (peek == '*' || peek == '/'))return -1;
+        if(peek == '^' && c == '^') return -1;
+        if(c == 's' && (peek == 's' || peek == 'c' || peek == 't'))return -1;
+        if(c == 'c' && (peek == 's' || peek == 'c' || peek == 't'))return -1;
+        if(c == 't' && (peek == 's' || peek == 'c' || peek == 't'))return -1;
         return 1;
     }
+
 }
 

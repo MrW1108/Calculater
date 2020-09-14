@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <GridLayout
         android:id="@+id/gridLayout"
@@ -14,21 +12,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:rowCount="8"
-        android:columnCount="4">
+        android:rowCount="6"
+        android:columnCount="7">
 
         <EditText
             android:id="@+id/txt"
-            android:layout_columnSpan="4"
-            android:layout_rowSpan="1"
+            android:layout_columnSpan="5"
             android:layout_gravity = "fill"
-            android:textSize="50sp"/>
+            android:textSize="15sp"/>
         <EditText
             android:id="@+id/result"
-            android:layout_columnSpan="4"
-            android:layout_rowSpan="1"
+            android:layout_columnSpan="2"
             android:layout_gravity = "fill"
-            android:textSize="50sp"/>
+            android:textSize="15sp"/>
+        <Button
+            android:text="@string/leftParenthese" />
+        <Button
+            android:text="@string/rightParenthese" />
+        <Button
+            android:textAllCaps="false"
+            android:text="@string/x1" />
         <Button
             android:text="@string/clear" />
         <Button
@@ -38,23 +41,31 @@
         <Button
             android:text="@string/delete" />
         <Button
-            android:text="@string/sin"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:text="@string/x2" />
         <Button
-            android:text="@string/leftParenthese"/>
+            android:textAllCaps="false"
+            android:text="@string/x3" />
         <Button
-            android:text="@string/rightParenthese" />
+            android:textAllCaps="false"
+            android:text="@string/xy" />
         <Button
-            android:text="@string/cos"
-            android:textAllCaps="false"/>
-        <Button
-            android:text="@string/number7"/>
+            android:text="@string/number7" />
         <Button
             android:text="@string/number8" />
         <Button
             android:text="@string/number9" />
         <Button
             android:text="@string/multiplication" />
+        <Button
+            android:textAllCaps="false"
+            android:text="@string/e" />
+        <Button
+            android:textAllCaps="false"
+            android:text="@string/ln" />
+        <Button
+            android:textAllCaps="false"
+            android:text="@string/log" />
         <Button
             android:text="@string/number4" />
         <Button
@@ -63,6 +74,15 @@
             android:text="@string/number6" />
         <Button
             android:text="@string/division" />
+        <Button
+            android:textAllCaps="false"
+            android:text="@string/sin" />
+        <Button
+            android:textAllCaps="false"
+            android:text="@string/cos" />
+        <Button
+            android:textAllCaps="false"
+            android:text="@string/tan" />
         <Button
             android:text="@string/number1" />
         <Button
@@ -74,12 +94,18 @@
             android:layout_rowSpan="2"
             android:layout_gravity = "fill" />
         <Button
-            android:text="@string/surplus" />
+            android:text="@string/factorial" />
+        <Button
+            android:text="@string/sqrt" />
+        <Button
+            android:textAllCaps="false"
+            android:text="@string/pai"/>
+        <Button
+            android:text="@string/surplus"/>
         <Button
             android:text="@string/number0" />
         <Button
             android:text="@string/decimal" />
 
     </GridLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
