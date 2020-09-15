@@ -88,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
                 result.setText(null);
                 break;
             case "X":
-                txt.setText(txt.getText().toString().substring(0,txt.getText().toString().length()-1));
+                if(txt.getText().toString().length()!=0)
+                    txt.setText(txt.getText().toString().substring(0,txt.getText().toString().length()-1));
                 try {
                     result.setText("" + solve(txt.getText().toString()));
                 }catch (Exception e){
